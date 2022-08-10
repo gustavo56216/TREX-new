@@ -16,6 +16,7 @@ var score = 0 ;
 var velo = 4 ;
 var lose;
 
+
 function preload(){
   trex_running = loadAnimation("trex1.png","trex3.png","trex4.png");
   groundImage = loadImage("ground2.png")
@@ -36,7 +37,7 @@ function preload(){
 }
 
 function setup(){
-  createCanvas(600,200);
+  createCanvas(windowWidth,windowHeight);
   frameRate(80);
 
   //criando o trex
@@ -55,11 +56,12 @@ function setup(){
   solo2.visible=false;
 
   //GameOver e Restart
-  gameover=createSprite(300,60,30,30 );
+  gameover=createSprite(width/2,60,30,30 );
   gameover.addImage("gameover",gameoverimg);
   gameover.visible=false;
+  gameover.scale=0.60;
 
-  restart=createSprite(300,100,10,10 );
+  restart=createSprite(width/2,100,10,10 );
   restart.addImage("restart",restarting);
   restart.visible=false;
   restart.scale=0.60;
@@ -75,9 +77,10 @@ function draw(){
   //JOGAR
   if(gameState === "jogar"){
     
-    if(keyDown("space")&&trex.y>160){
+    if( touches.length>0 ||keyDown("space")&&trex.y>160){
       trex.velocityY = -12;
       song3.play();
+      touches = []
     }
     score+= Math.round(frameCount/320);
     if(score%200===0 && score>0){
@@ -110,7 +113,7 @@ function draw(){
     restart.visible=true;
     trex.changeAnimation("lose", lose);
 
-    if(mousePressedOver(restart)){
+    if(mousePressedOver(restart)|| touches.length>0){
       gameState="jogar";
       evecactos.destroyEach();
       evenuvens.destroyEach();
@@ -119,6 +122,7 @@ function draw(){
       score=0;
       frameCount=0;
       trex.changeAnimation("running",trex_running);
+      touches=[]
     }
 
   }
@@ -129,7 +133,7 @@ function draw(){
 
 function geranuvens(){  
   if(frameCount%(Math.round(random(40,60)))===0){
-    nuvens=createSprite(600,100,20,50);
+    nuvens=createSprite(width,100,20,50);
     nuvens.velocityX=-3;
     nuvens.addImage(nuvens2);
     nuvens.y = Math.round(random(20,100));
@@ -142,7 +146,7 @@ function geranuvens(){
 
 function cactos (){  
   if(frameCount%60===0){
-    cacto=createSprite(600,174,20,50);
+    cacto=createSprite(width,174,20,50);
     cacto.velocityX=-velo;
     cacto.lifetime=220;
     evecactos.add(cacto);
