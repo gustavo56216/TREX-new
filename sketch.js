@@ -37,6 +37,8 @@ function preload(){
 
 function setup(){
   createCanvas(600,200);
+  frameRate(80);
+
   //criando o trex
   trex = createSprite(50,160,20,50);
   trex.addAnimation("running", trex_running);
@@ -77,7 +79,7 @@ function draw(){
       trex.velocityY = -12;
       song3.play();
     }
-    score+= Math.round(frameCount/120);
+    score+= Math.round(frameCount/320);
     if(score%200===0 && score>0){
       velo=velo+1;
       song1.play();
